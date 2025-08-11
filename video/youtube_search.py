@@ -2,7 +2,7 @@ import re
 import requests
 from youtubesearchpython import VideosSearch
 
-def search_youtube_videos(query, limit=7):
+def search_youtube_videos(query, limit=6):
     videosSearch = VideosSearch(query, limit=limit)
     results = videosSearch.result().get("result", [])
     videos = []
