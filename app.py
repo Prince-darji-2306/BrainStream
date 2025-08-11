@@ -26,16 +26,14 @@ with st.sidebar:
 
 session_state()
 
-flag = False
 if st.session_state["page"] == "search":
     st.header("Search YouTube Videos")
     query = st.text_input("Enter YouTube Video Name or Paste Link")
-    if st.session_state['results']:
-        show_videos(st.session_state['results'])
     if query:
         if "youtube.com" in query or "youtu.be" in query:
-            flag = False
+            st.session_state['flag'] = False
             id, title = youtube_id(query)
+            st.session_state.results = None
             process_video(id, title)
         else:
             with st.spinner('Fetching Videos.'):
@@ -44,19 +42,24 @@ if st.session_state["page"] == "search":
                 st.info("No videos found.")
             else:
                 st.session_state['results'] = videos
-                flag = True
-                show_videos(st.session_state['results'])
+                st.session_state['flag'] = True
+                show_videos(videos)
+    elif st.session_state['results']:
+        show_videos(st.session_state['results'])
 
 elif st.session_state["page"] == "chat":
     st.header("Chat with Video")
+
     video = st.session_state.get("selected_video")
+    
     if not video:
         st.warning("No video selected, please go to Search Video first.")
     else:
         st.markdown('Video : ' + video)
-        if flag:
-            process_video(st.session_state['selected_video'],
-                          st.session_state['selected_id'], False)
+        if st.session_state['flag']:
+            st.session_state.flag = False
+            process_video(st.session_state['selected_id'],
+                          st.session_state['selected_video'], False)
 
         if not st.session_state['chat_chain']:
             chat_chain, memory = get_conversational_chain(st.session_state['vectorstore'])
