@@ -1,0 +1,46 @@
+[data-testid='stAppViewBlockContainer']
+{
+    padding-top:20px !important;
+}
+
+h2
+{
+    padding-bottom: 0px !important;
+}
+
+.user-msg {
+    background-color: #f2f2f2;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 14px;
+    margin: 20px 0;
+    max-width: 75%;
+    float: right;
+    clear: both;
+    text-align: right;
+}
+
+.card {
+    margin: 15px 15px 10px;
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid rgb(234, 234, 234);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.08);
+
+}
+
+.card-text {
+    font-weight: 550;
+    padding: 0.5rem;
+}
+
+.st-emotion-cache-7ym5gk
+{
+    margin-left: 15px;
+}
