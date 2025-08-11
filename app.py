@@ -45,7 +45,7 @@ if st.session_state["page"] == "search":
             else:
                 st.session_state['results'] = videos
                 flag = True
-                show_videos()
+                show_videos(st.session_state['results'])
 
 elif st.session_state["page"] == "chat":
     st.header("Chat with Video")
