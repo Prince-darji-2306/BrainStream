@@ -3,7 +3,7 @@ langchain
 langchain-community
 langchain-groq
 langchain-huggingface
-youtubesearchpython
+youtube-search-python
 youtube-transcript-api
 sentence-transformers
 faiss-cpu
