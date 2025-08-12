@@ -13,7 +13,7 @@ h2
     color: black;
     padding: 10px 15px;
     border-radius: 14px;
-    margin: 7px 0;
+    margin: 10px 0;
     max-width: 75%;
     float: right;
     clear: both;
@@ -32,7 +32,6 @@ h2
 .card:hover {
     transform: scale(1.05);
     box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.08);
-
 }
 
 .card-text {
