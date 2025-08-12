@@ -9,7 +9,7 @@ def get_subtitles(video_id):
         transcript = transcript.fetch(video_id, languages=['en'])
 
         full_text = " ".join([snippet.text for snippet in transcript])
-        if full_text.strip != '':
+        if full_text.strip() != '':
             return split_text(full_text)
         else:
             return None

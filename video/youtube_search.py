@@ -3,18 +3,21 @@ import requests
 from youtubesearchpython import VideosSearch
 
 def search_youtube_videos(query, limit=6):
-    videosSearch = VideosSearch(query, limit=limit)
-    results = videosSearch.result().get("result", [])
-    videos = []
-    for v in results:
-        video_info = {
-            "title": v.get("title"),
-            "url": v.get("link"),
-            "thumbnail": v.get("thumbnails")[0]["url"],
-            "id": v.get("id"),
-        }
-        videos.append(video_info)
-    return videos
+    try:
+        videosSearch = VideosSearch(query, limit=limit)
+        results = videosSearch.result().get("result", [])
+        videos = []
+        for v in results:
+            video_info = {
+                "title": v.get("title"),
+                "url": v.get("link"),
+                "thumbnail": v.get("thumbnails")[0]["url"],
+                "id": v.get("id"),
+            }
+            videos.append(video_info)
+        return videos
+    except Exception as e:
+        return None
 
 def youtube_title(video_id):
     try:
