@@ -43,7 +43,7 @@ if st.session_state["page"] == "search":
             else:
                 st.session_state['results'] = videos
                 st.session_state['flag'] = True
-                show_videos(videos)
+                show_videos(st.session_state['results'])
     elif st.session_state['results']:
         show_videos(st.session_state['results'])
 
@@ -60,30 +60,30 @@ elif st.session_state["page"] == "chat":
             st.session_state.flag = False
             process_video(st.session_state['selected_id'],
                           st.session_state['selected_video'], False)
-
-        if not st.session_state['chat_chain']:
-            chat_chain, memory = get_conversational_chain(st.session_state['vectorstore'])
-            st.session_state["chat_chain"] = chat_chain
-            st.session_state["memory"] = memory
-        else:
-            chat_chain = st.session_state["chat_chain"]
-            memory = st.session_state["memory"]
-        
-        chat = get_conversation(memory)
-
-        for msg in chat:
-            if isinstance(msg, HumanMessage):
-                st.markdown(f'<div class="user-msg">{msg.content}</div>', unsafe_allow_html=True)
-            elif isinstance(msg, AIMessage):
-                st.markdown(msg.content, unsafe_allow_html=True)     
-
-        query = st.chat_input("Ask anything about the video:")
-        if query:
-            st.markdown(f'<div class="user-msg">{query}</div>', unsafe_allow_html=True)
+        if st.session_state['vectorstore']:
+            if not st.session_state['chat_chain']:
+                chat_chain, memory = get_conversational_chain(st.session_state['vectorstore'])
+                st.session_state["chat_chain"] = chat_chain
+                st.session_state["memory"] = memory
+            else:
+                chat_chain = st.session_state["chat_chain"]
+                memory = st.session_state["memory"]
             
-            with st.spinner("Getting response..."):
-                result = chat_chain.run(question=query)
-            st.markdown(result, unsafe_allow_html=True)
+            chat = get_conversation(memory)
+
+            for msg in chat:
+                if isinstance(msg, HumanMessage):
+                    st.markdown(f'<div class="user-msg">{msg.content}</div>', unsafe_allow_html=True)
+                elif isinstance(msg, AIMessage):
+                    st.markdown(msg.content, unsafe_allow_html=True)     
+
+            query = st.chat_input("Ask anything about the video:")
+            if query:
+                st.markdown(f'<div class="user-msg">{query}</div>', unsafe_allow_html=True)
+                
+                with st.spinner("Getting response..."):
+                    result = chat_chain.run(question=query)
+                st.markdown(result, unsafe_allow_html=True)
 
 
         

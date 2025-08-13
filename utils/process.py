@@ -1,10 +1,10 @@
 import streamlit as st
 from video.video_processing import get_subtitles
 
-def session_state(start = True, reset = False):
-    if start:
-        if 'page' not in st.session_state:
-            st.session_state["page"] = "search"
+def session_state(reset = False):
+    if 'page' not in st.session_state:
+        st.session_state["page"] = "search"
+        
     for i in ["selected_video", 'selected_id', "vectorstore", "chat_chain", "memory", 'results', 'flag']:
         if i not in st.session_state:
             st.session_state[i] = None
@@ -38,8 +38,10 @@ def show_videos(videos):
                     <div class ='card-text'>{video['title']}</div>
                 </div>
             """, unsafe_allow_html=True)
+            
             if st.button("▶ Select", key=f"{video['id']}"):
                 st.session_state['selected_video'] = video['title']
                 st.session_state['selected_id'] = video['id']
+                session_state(reset=True)
                 st.session_state["page"] = "chat"
                 st.rerun()
