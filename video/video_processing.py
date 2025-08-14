@@ -2,11 +2,20 @@ from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, Tran
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from embedding import load_model
+import logging
+
+# Configure the logger
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level to INFO
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger(__name__)
 
 def get_subtitles(video_id):
     api = YouTubeTranscriptApi()
     try:
-        
+        logger.info(video_id)
         transcript_list = api.list(video_id)
 
         english_codes = ['en', 'en-US', 'en-GB']
