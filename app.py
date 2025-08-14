@@ -4,8 +4,7 @@ from llm_engine import get_conversational_chain, get_conversation
 from utils.process import session_state, process_video, show_videos
 from langchain.schema import HumanMessage, AIMessage
 
-
-st.set_page_config(page_title="BrainStrem | RAG Assistnt for YouTube Video", layout="wide", page_icon='static/img/icon.png')
+st.set_page_config(page_title="BrainStrem | RAG Assistant for YouTube Video", layout="wide", page_icon='static/img/icon.png')
 
 def local_css(file_name):
     with open(file_name) as f:
