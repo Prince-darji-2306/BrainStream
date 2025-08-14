@@ -71,6 +71,7 @@ def get_subtitles(video_id):
         
         raise NoTranscriptFound("No subtitles available for this video.")
     except Exception as e:
+        logger.info(e)
         return None
     
 
