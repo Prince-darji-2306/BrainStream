@@ -1,4 +1,4 @@
-import requests, random
+import requests, random, os
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled, CouldNotRetrieveTranscript, TranslationLanguageNotAvailable, NotTranslatable
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
@@ -14,16 +14,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def set_proxy():
-    working_proxies = ['http://knzhiunq:ce8ggrl5cyh5@23.95.150.145:6114',
-    'http://knzhiunq:ce8ggrl5cyh5@198.23.239.134:6540',
-    'http://knzhiunq:ce8ggrl5cyh5@45.38.107.97:6014',
-    'http://knzhiunq:ce8ggrl5cyh5@107.172.163.27:6543',
-    'http://knzhiunq:ce8ggrl5cyh5@64.137.96.74:6641',
-    'http://knzhiunq:ce8ggrl5cyh5@45.43.186.39:6257',
-    'http://knzhiunq:ce8ggrl5cyh5@154.203.43.247:5536',
-    'http://knzhiunq:ce8ggrl5cyh5@216.10.27.159:6837',
-    'http://knzhiunq:ce8ggrl5cyh5@136.0.207.84:6661',
-    'http://knzhiunq:ce8ggrl5cyh5@142.147.128.93:6593']
+    working_proxies = os.getenv('PROXY').replace('\'','').split(',')
 
     proxy = random.choice(working_proxies)
     print(f"🔄 Using proxy: {proxy}")
