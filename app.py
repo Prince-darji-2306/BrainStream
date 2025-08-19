@@ -83,6 +83,3 @@ elif st.session_state["page"] == "chat":
                 with st.spinner("Getting response..."):
                     result = chat_chain.run(question=query)
                 st.markdown(result, unsafe_allow_html=True)
-
-
-        
