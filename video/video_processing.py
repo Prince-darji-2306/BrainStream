@@ -1,5 +1,6 @@
 import requests, random, os
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled, CouldNotRetrieveTranscript, TranslationLanguageNotAvailable, NotTranslatable
+from youtube_transcript_api.proxies import GenericProxyConfig
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 from embedding import load_model
@@ -13,21 +14,20 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-def set_proxy():
+def get_proxy():
     working_proxies = os.getenv('PROXY').replace('\'','').split(',')
-
-    proxy = random.choice(working_proxies)
-    print(f"🔄 Using proxy: {proxy}")
-    
-    logger.info(f"Using proxy: {proxy}")
-    session = requests.Session()
-    session.proxies = {"http": proxy, "https": proxy}
-    return session
+    proxy = random.choice(working_proxies)    
+    return proxy
 
 def get_subtitles(video_id):
-    api = YouTubeTranscriptApi(http_client = set_proxy())
+    proxy = get_proxy()
+    api = YouTubeTranscriptApi(
+        proxy_config = GenericProxyConfig(
+            http_url=proxy,
+            https_url=proxy
+        )
+    )
     try:
-        logger.info(video_id)
         transcript_list = api.list(video_id)
 
         english_codes = ['en', 'en-US', 'en-GB']
