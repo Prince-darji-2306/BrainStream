@@ -14,20 +14,8 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-def get_proxy():
-    working_proxies = os.getenv('PROXY').replace('\'','').split(',')
-    proxy = random.choice(working_proxies)    
-    logger.info(proxy)
-    return proxy
-
 def get_subtitles(video_id):
-    proxy = get_proxy()
-    api = YouTubeTranscriptApi(
-        proxy_config = GenericProxyConfig(
-            http_url=proxy,
-            https_url=proxy
-        )
-    )
+    api = YouTubeTranscriptApi()
     try:
         transcript_list = api.list(video_id)
 
