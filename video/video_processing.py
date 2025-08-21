@@ -1,4 +1,4 @@
-import requests, random, os
+import random, os
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled, CouldNotRetrieveTranscript, TranslationLanguageNotAvailable, NotTranslatable
 from youtube_transcript_api.proxies import GenericProxyConfig
 from langchain.schema import Document
@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 def get_proxy():
     working_proxies = os.getenv('PROXY').replace('\'','').split(',')
     proxy = random.choice(working_proxies)    
+    logger.info(proxy)
     return proxy
 
 def get_subtitles(video_id):
