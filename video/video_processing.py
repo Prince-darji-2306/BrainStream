@@ -1,10 +1,8 @@
-import random, os
-from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled, CouldNotRetrieveTranscript, TranslationLanguageNotAvailable, NotTranslatable
-from youtube_transcript_api.proxies import GenericProxyConfig
-from langchain.schema import Document
-from langchain_community.vectorstores import FAISS
-from embedding import load_model
 import logging
+from langchain.schema import Document
+from utils.embedding import load_model
+from langchain_community.vectorstores import FAISS
+from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, CouldNotRetrieveTranscript, TranslationLanguageNotAvailable, NotTranslatable
 
 # Configure the logger
 logging.basicConfig(

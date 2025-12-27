@@ -19,6 +19,7 @@ def process_video(id, title, rerun = True):
         if not vectorstore:
             st.error("No subtitles found for this video.")
         else:
+            st.session_state['selected_id'] = id
             st.session_state["selected_video"] = title
             st.session_state["vectorstore"] = vectorstore
             session_state(reset=True)
@@ -42,6 +43,7 @@ def show_videos(videos):
             if st.button("▶ Select", key=f"{video['id']}"):
                 st.session_state['selected_video'] = video['title']
                 st.session_state['selected_id'] = video['id']
+                st.session_state['flag'] = True
                 session_state(reset=True)
                 st.session_state["page"] = "chat"
                 st.rerun()

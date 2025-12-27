@@ -1,8 +1,8 @@
 import streamlit as st
-from video.youtube_search import search_youtube_videos, youtube_id
-from llm_engine import get_conversational_chain, get_conversation
-from utils.process import session_state, process_video, show_videos
 from langchain.schema import HumanMessage, AIMessage
+from llm_engine import get_conversational_chain, get_conversation
+from video.youtube_search import search_youtube_videos, youtube_id
+from utils.session_videos import session_state, process_video, show_videos
 
 st.set_page_config(page_title="BrainStrem | RAG Assistant for YouTube Video", layout="wide", page_icon='static/img/icon.png')
 
@@ -27,10 +27,11 @@ session_state()
 
 if st.session_state["page"] == "search":
     st.header("Search YouTube Videos")
-    query = st.text_input("Enter YouTube Video Name or Paste Link")
+    query = st.text_input("Enter Title Name or Paste Youtube Link...")
     if query:
         if "youtube.com" in query or "youtu.be" in query:
-            st.session_state['flag'] = False
+            if st.session_state.flag:
+                st.session_state['flag'] = False
             id, title = youtube_id(query)
             st.session_state.results = None
             process_video(id, title)
@@ -41,7 +42,6 @@ if st.session_state["page"] == "search":
                 st.info("No videos found.")
             else:
                 st.session_state['results'] = videos
-                st.session_state['flag'] = True
                 show_videos(st.session_state['results'])
     elif st.session_state['results']:
         show_videos(st.session_state['results'])
