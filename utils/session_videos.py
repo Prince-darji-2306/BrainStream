@@ -8,9 +8,12 @@ def session_state(reset = False):
     for i in ["selected_video", 'selected_id', "vectorstore", "chat_chain", "memory", 'results', 'flag']:
         if i not in st.session_state:
             st.session_state[i] = None
+        st.session_state['syspromt'] = True
+        
     if reset:
         for i in ["memory",'chat_chain']:
             st.session_state[i] = None
+        st.session_state['syspromt'] = True
 
 
 def process_video(id, title, rerun = True):

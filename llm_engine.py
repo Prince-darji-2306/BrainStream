@@ -1,8 +1,9 @@
+import os
+import re
 from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -25,13 +26,18 @@ Your responses should:
 4. Do not mention that you are an AI or that you are following a prompt.  
 """
 
-def get_conversational_chain(vectorstore):
+def get_conversational_chain(vectorstore, sys):
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
+    prompt = """\n\nUse context to answer the question
+        \n\n {context}\n\nQuestion: {question}\n Helpful Answer:"""
+    
+    if sys:
+        prompt = SPROMPT + prompt
+
     qa_prompt = PromptTemplate.from_template(
-        SPROMPT + "\n\nUse context to answer the question"
-        "\n\n {context}\n\nQuestion: {question}\n Helpful Answer:"
+        prompt
     )
 
     qa_chain = ConversationalRetrievalChain.from_llm(
@@ -45,3 +51,16 @@ def get_conversational_chain(vectorstore):
 
 def get_conversation(memory):
     return memory.load_memory_variables({})["chat_history"]
+
+def render_llm_math(text: str):
+    """
+    Safely render mixed Markdown + LaTeX from LLM output in Streamlit
+    """
+
+    # 1. Convert block math \[ ... \] → $$ ... $$
+    text = re.sub(r"\\\[(.*?)\\\]", r"$$\1$$", text, flags=re.DOTALL)
+
+    # 2. Convert inline math \( ... \) → $ ... $
+    text = re.sub(r"\\\((.*?)\\\)", r"$\1$", text)
+
+    return text

@@ -1,8 +1,8 @@
 import streamlit as st
 from langchain.schema import HumanMessage, AIMessage
-from llm_engine import get_conversational_chain, get_conversation
 from video.youtube_search import search_youtube_videos, youtube_id
 from utils.session_videos import session_state, process_video, show_videos
+from llm_engine import get_conversational_chain, get_conversation, render_llm_math
 
 st.set_page_config(page_title="BrainStrem | RAG Assistant for YouTube Video", layout="wide", page_icon='static/img/icon.png')
 
@@ -61,7 +61,9 @@ elif st.session_state["page"] == "chat":
                           st.session_state['selected_video'], False)
         if st.session_state['vectorstore']:
             if not st.session_state['chat_chain']:
-                chat_chain, memory = get_conversational_chain(st.session_state['vectorstore'])
+                chat_chain, memory = get_conversational_chain(st.session_state['vectorstore'], st.session_state['syspromt'])
+                st.session_state['syspromt'] = False
+                    
                 st.session_state["chat_chain"] = chat_chain
                 st.session_state["memory"] = memory
             else:
@@ -74,7 +76,8 @@ elif st.session_state["page"] == "chat":
                 if isinstance(msg, HumanMessage):
                     st.markdown(f'<div class="user-msg">{msg.content}</div>', unsafe_allow_html=True)
                 elif isinstance(msg, AIMessage):
-                    st.markdown(msg.content, unsafe_allow_html=True)     
+                    result = render_llm_math(msg.content)
+                    st.markdown(result, unsafe_allow_html=True)     
 
             query = st.chat_input("Ask anything about the video:")
             if query:
@@ -82,4 +85,5 @@ elif st.session_state["page"] == "chat":
                 
                 with st.spinner("Getting response..."):
                     result = chat_chain.run(question=query)
+                    result = render_llm_math(result)
                 st.markdown(result, unsafe_allow_html=True)
