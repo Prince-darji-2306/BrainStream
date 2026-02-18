@@ -1,0 +1,5 @@
+.env
+__pycache__
+mock_training_data.csv
+test.ipynb
+test.py
